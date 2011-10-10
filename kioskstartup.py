@@ -25,7 +25,7 @@ While we're still willing to loop
 applecmd = []
 applecmd.append("osascript")
 applecmd.append("kioskcycle.scpt")
-d = feedparser.parse("http://foss.rit.edu/files/bookmarks.rss")
+d = feedparser.parse("http://cs.rit.edu/~ear7631/feed.rss")
 bookmarkitems = d['items']
 for item in bookmarkitems:
 	for link in item.links:
