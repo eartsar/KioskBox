@@ -1,0 +1,26 @@
+# Kiosk Settings
+#
+# This file contains all of the locations that the Kiosk script pulls from.
+# Use the examples given as a reference when adding your own sources or 
+# modifying existing ones.
+# Author: Eitan Romanoff
+
+# cycler settings...
+[kiosk_cycler]
+
+# location of where to toss things
+file_location = /Users/fossrit/Desktop
+
+# host to ping to test for a working internet connection
+ping_host = www.google.com
+
+# number of times to retry a connection. -1 for unending attempts
+ping_counter = 3
+
+# number of seconds to wait in between ping attempts
+ping_timer = 30
+
+# list of hosts for the feeds. Follows the format:
+# host : /location
+# candidate feeds are delimited by commas.
+feed_hosts = foss.rit.edu : /files/bookmarks.rss, cs.rit.edu : /~ear7631/feed.rss

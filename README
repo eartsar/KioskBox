@@ -3,38 +3,32 @@ Author: Eitan Romanoff
 You can find me on #rit-foss on freenode or at ear7631@gmail.com
 
 
-The "KioskBox" currently runs on a mac mini, with OSX 10.5.8 and a PPC. This results in slight trickiness in getting the scripts to work. Outlined below is a how-to to modify this particular box, and what can be done for future boxes on different machines.
+The "KioskBox" currently runs on a mac mini, with OSX 10.5.8 and a PPC (since that's the initial hardware that was given to me). Outlined below is a how-to to modify this particular box.
 
 
 Startup:
-For ease of use, status script resources are placed on the desktop. This is so that if something goes horribly wrong, it can be relaunched easily by anyone. The script runs in two parts: A python launcher that collects links VIA an RSS feed, and an Applescript cycler, which auto-launches a browser and cycles through given links. The python script gives the links to the applescript via run-time arguments.
+For ease of use, status script resources should be placed on the desktop. This is so that if something goes horribly wrong, it can be relaunched easily by anyone. The script runs in two parts: A python launcher that collects links VIA an RSS feed, and an Applescript cycler, which auto-launches a browser and cycles through given links. The python script gives the links to the applescript via run-time arguments.
 
-This script will not work until the following line is changed to reflect your desktop directory. Do note that you must give the full path, as login items are run with null user.
-	os.chdir("/Users/youruser/Desktop")
-
-Should this be running on startup, do note a few things. 1) It works most reliably when there is an internet connection present on login VIA ethernet. It should also work if it can connect (and register) on an open wireless network. Obviously, it will not be able to access pages if there are no available networks at startup (giving you not found pages), but it should work well upon finding a connection.
-
+Should this be running on startup, do note a few things. 1) It works most reliably when there is an internet connection present at login, so the use of an ethernet connection is recommended. It should also work if it can connect (and register) on a wireless network that is added to the mac's "default" wireless networks. Obviously, it will not be able to access pages if there are no available networks at startup (giving you not found pages), but it should work well upon finding a connection.
 
 
 Creating the applet for startup:
 Simply right-click the python script and select "Build Applet". This will make allow the program to run via double-click, on startup, and so forth. Whenever any of the code changes, you should create a new applet. This applet can also be run on startup by adding it to "startup items".
 
 
-Changing the RSS feed:
-Find the following line in the python launcher and change the link to direct to your rss feed:
-	d = feedparser.parse("somelink")
+Changing options:
+The kiosk_config file contains options that are pulled by the python script. Here, you can change the following items:
+	- Location of the files (python startup, the cycler, and the config file)
+	- The server to ping for internet testing (default is www.google.com)
+	- The number of times to try a ping for internet testing (default is 3)
+	- The timer between pings (default is 30 seconds)
+	- A list of possible hosts and feed connections to pull from.
 
-
-Changing the cycle rate:
-Find the following section in the applescript cycler and change the number to the number of seconds desired:
-	tell application "Opera"
-		set URL of document 1 to some url
-		delay 20
-	end tell
+Follow the format defined by the defaults when changing a value. Also note that the script pulls from the first feed whose host is up and running.
 
 
 Creating an RSS feed:
-The RSS feed used follows the Mozilla Live Bookmarks style where you have a broadcast that represents folder of bookmarks, and items which are bookmark links. The script currently is directed to a temporary public feed at cs.rit.edu/~ear7631/feed.rss and it is suggested that you host your own RSS feed following the format below. Note that only the links are really necessary, the rest gets ignored when parsing:
+The RSS feed used follows the Mozilla Live Bookmarks style where you have a broadcast that represents folder of bookmarks, and items which are bookmark links. It is suggested that you host your own RSS feed following the format below. Note that only the links are really necessary, the rest gets ignored when parsing:
 
 <rss version="2.0">
 	<channel>
@@ -62,4 +56,4 @@ Changing the browser requires tinkering. The Power PC Mac Mini running OSX 10.5.
 
 
 A note for future work:
-Should OSX 10.5 (or later) and an x86/x64 machine be used in the future, it is relatively trivial to convert the applescript portion into python code using the py-appscript library. This is suggested to keep things cohesive and running well. Running this on a windows machine would require other methods and libraries, perhaps as a C# startup program.
+In the near future, the next revision of the script will simply use py-appscript for all x86/x64 mac machines. Furthermore, the ability to specify a browser will be added.
